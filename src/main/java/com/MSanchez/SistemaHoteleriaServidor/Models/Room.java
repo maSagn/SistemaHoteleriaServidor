@@ -22,8 +22,8 @@ public class Room {
     @Column(name = "pricepernight")
     private double PricePerNight;
 
-    @Column(name = "isavaliable")
-    private boolean IsAvaliable;
+    @Column(name = "isavailable")
+    private boolean IsAvailable;
 
     @Column(name = "maxguests")
     private int MaxGuests;
@@ -55,11 +55,11 @@ public class Room {
     public void setPricePerNight(double pricePerNight) {
         PricePerNight = pricePerNight;
     }
-    public boolean isIsAvaliable() {
-        return IsAvaliable;
+    public boolean isIsAvailable() {
+        return IsAvailable;
     }
-    public void setIsAvaliable(boolean isAvaliable) {
-        IsAvaliable = isAvaliable;
+    public void setIsAvailable(boolean isAvailable) {
+        IsAvailable = isAvailable;
     }
     public int getMaxGuests() {
         return MaxGuests;
