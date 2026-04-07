@@ -2,6 +2,8 @@ package com.MSanchez.SistemaHoteleriaServidor.Models;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,6 +40,7 @@ public class Booking {
     @Column(name = "createdat")
     private Date CreatedAt;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "idroom", nullable = false)
     public Room Room;
