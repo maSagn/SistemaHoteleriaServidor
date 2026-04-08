@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.MSanchez.SistemaHoteleriaServidor.DAO.IRepositoryBooking;
+import com.MSanchez.SistemaHoteleriaServidor.DAO.IRepositoryRoom;
 import com.MSanchez.SistemaHoteleriaServidor.Models.Booking;
 import com.MSanchez.SistemaHoteleriaServidor.Models.Result;
 import com.MSanchez.SistemaHoteleriaServidor.Models.Room;
@@ -17,6 +18,9 @@ public class ServiceBooking {
 
     @Autowired
     private IRepositoryBooking iRepositoryBooking;
+
+    @Autowired
+    private IRepositoryRoom iRepositoryRoom;
 
     public Result GetAll() {
         Result result = new Result();
@@ -59,6 +63,14 @@ public class ServiceBooking {
         Result result = new Result();
 
         try {
+            boolean roomAvailable = iRepositoryRoom.RoomAvailable(booking.Room.getIdRoom());
+
+            if (!roomAvailable) {
+                result.errorMessage = "Esta habitacion no se encuentra disponible";
+                result.correct = false;
+                return result;
+            }
+
             Booking savedBooking = iRepositoryBooking.save(booking);
             result.object = savedBooking;
             result.correct = true;

@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.MSanchez.SistemaHoteleriaServidor.DAO.IRepositoryBooking;
 import com.MSanchez.SistemaHoteleriaServidor.DAO.IRepositoryRoom;
 import com.MSanchez.SistemaHoteleriaServidor.Models.Result;
 import com.MSanchez.SistemaHoteleriaServidor.Models.Room;
@@ -16,13 +19,20 @@ public class ServiceRoom {
     @Autowired
     private IRepositoryRoom iRepositoryRoom;
 
-    public Result GetAll() {
+    @Autowired
+    private IRepositoryBooking iRepositoryBooking;
+
+    public Result GetAll(Room room, Pageable pageable) {
         Result result = new Result();
 
         try {
-            List<Room> rooms = iRepositoryRoom.findAll();
-            result.object = rooms;
-            result.correct = true;
+            if (room == null) {
+                Page<Room> page = iRepositoryRoom.findAll(pageable);
+
+                result.object = page.getContent();
+                result.totalRecords = page.getTotalElements();
+                result.correct = true;
+            }
 
         } catch (Exception ex) {
             result.correct = false;
@@ -142,6 +152,15 @@ public class ServiceRoom {
             Optional<Room> roomFind = iRepositoryRoom.findById(IdRoom);
 
             if (roomFind.isPresent()) {
+
+                long ActiveRoom = iRepositoryBooking.countRecordsByIdRoom(IdRoom);
+
+                if (ActiveRoom > 0) {
+                    result.errorMessage = "No se puede eliminar la habitacion porque tiene reservas activas.";
+                    result.correct = false;
+                    return result;
+                    
+                }
                 iRepositoryRoom.deleteById(IdRoom);
                 result.correct = true;
             }
