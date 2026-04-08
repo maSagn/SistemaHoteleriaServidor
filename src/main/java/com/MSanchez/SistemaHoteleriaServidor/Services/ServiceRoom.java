@@ -33,6 +33,23 @@ public class ServiceRoom {
         return result;
     }
 
+    public Result GetByRoomsAvailable(String type) {
+        Result result = new Result();
+
+        try {
+            List<Room> rooms = iRepositoryRoom.findByType(type);
+            result.object = rooms;
+            result.correct = true;
+            
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+
+        return result;
+    }
+
     public Result GetById(int IdRoom) {
         Result result = new Result();
 

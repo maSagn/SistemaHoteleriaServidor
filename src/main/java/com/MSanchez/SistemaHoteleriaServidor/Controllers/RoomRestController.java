@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.MSanchez.SistemaHoteleriaServidor.Models.Result;
@@ -25,6 +26,12 @@ public class RoomRestController {
     @GetMapping
     public ResponseEntity GetAll() {
         Result result = serviceRoom.GetAll();
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/available")
+    public ResponseEntity GetRoomsAvailable(@RequestParam(required = false) String type) {
+        Result result = serviceRoom.GetByRoomsAvailable(type);
         return ResponseEntity.ok(result);
     }
 

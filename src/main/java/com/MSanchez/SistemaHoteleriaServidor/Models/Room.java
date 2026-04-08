@@ -17,7 +17,7 @@ public class Room {
     private String RoomNumber;
 
     @Column(name = "type")
-    private String Type;
+    private String type;
 
     @Column(name = "pricepernight")
     private double PricePerNight;
@@ -44,10 +44,10 @@ public class Room {
         RoomNumber = roomNumber;
     }
     public String getType() {
-        return Type;
+        return type;
     }
     public void setType(String type) {
-        Type = type;
+        this.type = type;
     }
     public double getPricePerNight() {
         return PricePerNight;

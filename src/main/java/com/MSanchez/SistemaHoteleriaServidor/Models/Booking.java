@@ -23,7 +23,7 @@ public class Booking {
     private String GuestName;
 
     @Column(name = "guestemail")
-    private String GuestEmail;
+    private String guestEmail;
 
     @Column(name = "checkin")
     private Date CheckIn;
@@ -62,11 +62,11 @@ public class Booking {
     }
 
     public String getGuestEmail() {
-        return GuestEmail;
+        return guestEmail;
     }
 
     public void setGuestEmail(String guestEmail) {
-        GuestEmail = guestEmail;
+        this.guestEmail = guestEmail;
     }
 
     public Date getCheckIn() {
