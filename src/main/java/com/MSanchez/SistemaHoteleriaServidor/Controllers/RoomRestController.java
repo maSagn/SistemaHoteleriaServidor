@@ -27,11 +27,10 @@ public class RoomRestController {
 
     @GetMapping
     public ResponseEntity GetAll(
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "10") int size
-    ) {
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        
+
         Result result = serviceRoom.GetAll(null, pageable);
         return ResponseEntity.ok(result);
     }
@@ -53,7 +52,7 @@ public class RoomRestController {
         Result result = serviceRoom.Add(room);
         return ResponseEntity.ok(result);
     }
-    
+
     @PatchMapping("/{IdRoom}")
     public ResponseEntity Update(@RequestBody Room room, @PathVariable int IdRoom) {
         Result result = serviceRoom.Update(room, IdRoom);
@@ -63,6 +62,11 @@ public class RoomRestController {
     @DeleteMapping("/{IdRoom}")
     public ResponseEntity Delete(@PathVariable int IdRoom) {
         Result result = serviceRoom.Delete(IdRoom);
-        return ResponseEntity.ok(result);
+
+        if (result.correct) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.badRequest().body(result.errorMessage);
+        }
     }
 }
