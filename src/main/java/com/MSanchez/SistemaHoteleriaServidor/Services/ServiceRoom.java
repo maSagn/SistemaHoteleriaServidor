@@ -84,6 +84,7 @@ public class ServiceRoom {
         Result result = new Result();
 
         try {
+            room.setIsAvailable(true);
             Room savedRoom = iRepositoryRoom.save(room);
             result.object = savedRoom;
             result.correct = true;
@@ -118,9 +119,10 @@ public class ServiceRoom {
                     roomExistente.setPricePerNight(room.getPricePerNight());
                 }
 
-                if (room.isIsAvailable()) {
-                    roomExistente.setIsAvailable(room.isIsAvailable());
-                }
+                // if (room.isIsAvailable()) {
+                //     roomExistente.setIsAvailable(room.isIsAvailable());
+                // }
+                roomExistente.setIsAvailable(true);
 
                 if (room.getMaxGuests() != 0) {
                     roomExistente.setMaxGuests(room.getMaxGuests());

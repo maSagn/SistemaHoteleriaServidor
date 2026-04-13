@@ -2,6 +2,8 @@ package com.MSanchez.SistemaHoteleriaServidor.Models;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -25,9 +27,11 @@ public class Booking {
     @Column(name = "guestemail")
     private String guestEmail;
 
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @Column(name = "checkin")
     private Date CheckIn;
 
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     @Column(name = "checkout")
     private Date CheckOut;
 

@@ -40,8 +40,8 @@ public class BookingRestController {
     }
 
     @PutMapping("/{IdBooking}/cancel")
-    public ResponseEntity Update(@RequestBody Booking booking, @PathVariable int IdBooking) {
-        Result result  = serviceBooking.Update(booking, IdBooking);
+    public ResponseEntity Update(@PathVariable int IdBooking) {
+        Result result  = serviceBooking.Update(IdBooking);
         return ResponseEntity.ok(result);
     }
 

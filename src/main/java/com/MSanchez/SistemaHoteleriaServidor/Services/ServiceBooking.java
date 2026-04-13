@@ -84,7 +84,7 @@ public class ServiceBooking {
         return result;
     }
 
-    public Result Update(Booking booking, int IdBooking) {
+    public Result Update(int IdBooking) {
         Result result = new Result();
 
         try {
@@ -98,7 +98,7 @@ public class ServiceBooking {
                 // bookingExistente.setCheckIn(booking.getCheckIn());
                 // bookingExistente.setCheckOut(booking.getCheckOut());
                 // bookingExistente.setTotalPrice(booking.getTotalPrice());
-                bookingExistente.setStatus(booking.getStatus());
+                bookingExistente.setStatus("Cancelled");
                 // bookingExistente.setCreatedAt(new Date());
                 // bookingExistente.Room = new Room();
                 // bookingExistente.Room.setIdRoom(booking.Room.getIdRoom());
