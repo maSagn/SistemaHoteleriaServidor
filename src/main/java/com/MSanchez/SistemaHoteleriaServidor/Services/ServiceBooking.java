@@ -71,6 +71,18 @@ public class ServiceBooking {
                 return result;
             }
 
+            booking.setStatus("Confirmed");
+
+            Optional<Room> roomFind = iRepositoryRoom.findById(booking.Room.getIdRoom());
+
+            if (roomFind.isPresent()) {
+                Room roomExistente = roomFind.get();
+                roomExistente.setIsAvailable(false);
+
+                Room savedRoom = iRepositoryRoom.save(roomExistente);
+                
+            }
+
             Booking savedBooking = iRepositoryBooking.save(booking);
             result.object = savedBooking;
             result.correct = true;

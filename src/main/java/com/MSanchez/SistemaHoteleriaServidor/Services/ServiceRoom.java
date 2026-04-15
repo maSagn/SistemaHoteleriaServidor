@@ -43,11 +43,11 @@ public class ServiceRoom {
         return result;
     }
 
-    public Result GetByRoomsAvailable(String type) {
+    public Result GetAvailableRoomsPerType(String type) {
         Result result = new Result();
 
         try {
-            List<Room> rooms = iRepositoryRoom.findByType(type);
+            List<Room> rooms = iRepositoryRoom.findAvailableRoomsPerType(type);
             result.object = rooms;
             result.correct = true;
             
@@ -167,6 +167,53 @@ public class ServiceRoom {
                 result.correct = true;
             }
 
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+
+        return result;
+    }
+
+    public Result GetAvailableRooms() {
+        Result result = new Result();
+
+        try {
+            List<Room> rooms = iRepositoryRoom.findAvailableRooms();
+            result.object = rooms;
+            result.correct = true;
+            
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+
+        return result;
+    }
+
+    public Result RoomFilter(String tipo, Boolean disponible) {
+        Result result = new Result();
+
+        try {
+
+            if (tipo != null && !tipo.isEmpty() && disponible != null) { // Si ambos traen valores
+                List<Room> rooms = iRepositoryRoom.findByTypeAndIsAvailable(tipo, disponible);
+                result.object = rooms;
+                result.correct = true;
+            } else if (tipo != null && !tipo.isEmpty()) { // Si solo tipo trae valor
+                List<Room> rooms = iRepositoryRoom.findByType(tipo);
+                result.object = rooms;
+                result.correct = true;
+            } else if (disponible != null) { // Si solo disponible trae valor
+                List<Room> rooms = iRepositoryRoom.findRoomsByIsAvailable(disponible);
+                result.object = rooms;
+                result.correct = true;
+            } else {
+                result.object = iRepositoryRoom.findAll();
+            }
+            
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();

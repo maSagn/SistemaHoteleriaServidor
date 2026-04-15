@@ -36,9 +36,14 @@ public class RoomRestController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity GetRoomsAvailable(@RequestParam(required = false) String type) {
-        Result result = serviceRoom.GetByRoomsAvailable(type);
-        return ResponseEntity.ok(result);
+    public ResponseEntity GetAvailableRoomsPerType(@RequestParam(required = false) String type) {
+        Result result = serviceRoom.GetAvailableRoomsPerType(type);
+
+        if (result.correct) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.badRequest().body(result.errorMessage);
+        }
     }
 
     @GetMapping("/{IdRoom}")
@@ -69,4 +74,20 @@ public class RoomRestController {
             return ResponseEntity.badRequest().body(result.errorMessage);
         }
     }
+
+    @GetMapping("/availableRooms")
+    public ResponseEntity GetRooms() {
+        Result result = serviceRoom.GetAvailableRooms();
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity RoomFilter(
+            @RequestParam(required = false) String tipo,
+            @RequestParam(required = false) Boolean disponible) {
+
+        Result result = serviceRoom.RoomFilter(tipo, disponible);
+        return ResponseEntity.ok(result);
+    }
+
 }
