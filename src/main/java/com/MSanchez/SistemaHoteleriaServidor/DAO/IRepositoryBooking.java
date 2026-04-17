@@ -14,4 +14,7 @@ public interface IRepositoryBooking extends JpaRepository<Booking, Integer> {
     @Query("SELECT COUNT (b) FROM Booking b WHERE b.Room.IdRoom = :idRoom")
     Long countRecordsByIdRoom(@Param("idRoom") int idRoom);
 
+    @Query("SELECT b FROM Booking b WHERE b.Status = :status")
+    List<Booking> findBookingsByStatus(@Param("status") String status);
+
 }

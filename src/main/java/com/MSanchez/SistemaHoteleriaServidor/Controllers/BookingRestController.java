@@ -49,7 +49,18 @@ public class BookingRestController {
     public ResponseEntity GetByGuestEmail(@PathVariable String email) {
         Result result = serviceBooking.GetByEmail(email);
         if (result.correct) {
-        return ResponseEntity.ok(result);
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.badRequest().body(result.errorMessage);
+        }
+    }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity GetByStatus(@PathVariable String status) {
+        Result result = serviceBooking.GetByStatus(status);
+
+        if (result.correct) {
+            return ResponseEntity.ok(result);
         } else {
             return ResponseEntity.badRequest().body(result.errorMessage);
         }

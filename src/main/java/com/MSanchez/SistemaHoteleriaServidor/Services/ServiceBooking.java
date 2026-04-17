@@ -105,15 +105,17 @@ public class ServiceBooking {
             if (bookingFind.isPresent()) {
                 Booking bookingExistente = bookingFind.get();
 
-                // bookingExistente.setGuestName(booking.getGuestName());
-                // bookingExistente.setGuestEmail(booking.getGuestEmail());
-                // bookingExistente.setCheckIn(booking.getCheckIn());
-                // bookingExistente.setCheckOut(booking.getCheckOut());
-                // bookingExistente.setTotalPrice(booking.getTotalPrice());
                 bookingExistente.setStatus("Cancelled");
-                // bookingExistente.setCreatedAt(new Date());
-                // bookingExistente.Room = new Room();
-                // bookingExistente.Room.setIdRoom(booking.Room.getIdRoom());
+
+                Optional<Room> roomFind = iRepositoryRoom.findById(bookingExistente.Room.getIdRoom());
+
+                if (roomFind.isPresent()) {
+                    Room roomExistente = roomFind.get();
+
+                    roomExistente.setIsAvailable(true);
+
+                    Room savedRoom = iRepositoryRoom.save(roomExistente);
+                }
 
                 Booking savedBooking = iRepositoryBooking.save(bookingExistente);
                 result.object = savedBooking;
@@ -142,6 +144,23 @@ public class ServiceBooking {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();
             result. ex = ex;
+        }
+
+        return result;
+    }
+
+    public Result GetByStatus(String status) {
+        Result result = new Result();
+        
+        try {
+            List<Booking> bookings = iRepositoryBooking.findBookingsByStatus(status);
+            result.object = bookings;
+            result.correct = true;
+            
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
         }
 
         return result;
