@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.MSanchez.SistemaHoteleriaServidor.DAO.IRepositoryBooking;
@@ -25,15 +27,27 @@ public class ServiceBooking {
     public Result GetAll() {
         Result result = new Result();
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        boolean isAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_Administrador"));
+
         try {
-            List<Booking> bookings = iRepositoryBooking.findAll();
-            result.object = bookings;
-            result.correct = true;
-            
+            if (isAdmin) {
+                List<Booking> bookings = iRepositoryBooking.findAll();
+                result.object = bookings;
+                result.correct = true;
+            } else {
+                List<Booking> bookings = iRepositoryBooking.findbyUsuarioEmail(email);
+                result.object = bookings;
+                result.correct = true;
+            }
+
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();
-            result. ex = ex;
+            result.ex = ex;
         }
 
         return result;
@@ -49,11 +63,11 @@ public class ServiceBooking {
                 result.object = booking;
                 result.correct = true;
             }
-            
+
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();
-            result. ex = ex;
+            result.ex = ex;
         }
 
         return result;
@@ -72,6 +86,7 @@ public class ServiceBooking {
             }
 
             booking.setStatus("Confirmed");
+            booking.setCreatedAt(new Date());
 
             Optional<Room> roomFind = iRepositoryRoom.findById(booking.Room.getIdRoom());
 
@@ -80,17 +95,17 @@ public class ServiceBooking {
                 roomExistente.setIsAvailable(false);
 
                 Room savedRoom = iRepositoryRoom.save(roomExistente);
-                
+
             }
 
             Booking savedBooking = iRepositoryBooking.save(booking);
             result.object = savedBooking;
             result.correct = true;
-            
+
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();
-            result. ex = ex;
+            result.ex = ex;
         }
 
         return result;
@@ -121,11 +136,11 @@ public class ServiceBooking {
                 result.object = savedBooking;
                 result.correct = true;
             }
-            
+
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();
-            result. ex = ex;
+            result.ex = ex;
         }
 
         return result;
@@ -139,11 +154,11 @@ public class ServiceBooking {
 
             result.object = bookings;
             result.correct = true;
-            
+
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();
-            result. ex = ex;
+            result.ex = ex;
         }
 
         return result;
@@ -151,12 +166,24 @@ public class ServiceBooking {
 
     public Result GetByStatus(String status) {
         Result result = new Result();
-        
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName();
+
+        boolean isAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_Administrador"));
+
         try {
-            List<Booking> bookings = iRepositoryBooking.findBookingsByStatus(status);
-            result.object = bookings;
-            result.correct = true;
-            
+            if (isAdmin) {
+                List<Booking> bookings = iRepositoryBooking.findBookingsByStatus(status);
+                result.object = bookings;
+                result.correct = true;
+            } else {
+                List<Booking> bookings = iRepositoryBooking.findBookingsByStatusAndEmail(status, email);
+                result.object = bookings;
+                result.correct = true;
+            }
+
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();

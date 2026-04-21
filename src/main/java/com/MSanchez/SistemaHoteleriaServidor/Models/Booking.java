@@ -49,6 +49,11 @@ public class Booking {
     @JoinColumn(name = "idroom", nullable = false)
     public Room Room;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "idusuario", nullable = false)
+    public Usuario Usuario;
+
     public int getIdBooking() {
         return IdBooking;
     }
@@ -119,5 +124,13 @@ public class Booking {
 
     public void setRoom(Room room) {
         Room = room;
+    }
+
+    public Usuario getUsuario() {
+        return Usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        Usuario = usuario;
     }
 }
