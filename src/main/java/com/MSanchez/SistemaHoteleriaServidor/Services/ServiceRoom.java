@@ -193,25 +193,32 @@ public class ServiceRoom {
         return result;
     }
 
-    public Result RoomFilter(String tipo, Boolean disponible) {
+    // Filtro Room
+    public Result RoomFilter(String tipo, Boolean disponible, Pageable pageable) {
         Result result = new Result();
 
         try {
 
             if (tipo != null && !tipo.isEmpty() && disponible != null) { // Si ambos traen valores
-                List<Room> rooms = iRepositoryRoom.findByTypeAndIsAvailable(tipo, disponible);
-                result.object = rooms;
+                Page<Room> rooms = iRepositoryRoom.findByTypeAndIsAvailable(tipo, disponible, pageable);
+                result.object = rooms.getContent();
+                result.totalRecords = rooms.getTotalElements();
                 result.correct = true;
             } else if (tipo != null && !tipo.isEmpty()) { // Si solo tipo trae valor
-                List<Room> rooms = iRepositoryRoom.findByType(tipo);
-                result.object = rooms;
+                Page<Room> rooms = iRepositoryRoom.findByType(tipo, pageable);
+                result.object = rooms.getContent();
+                result.totalRecords = rooms.getTotalElements();
                 result.correct = true;
             } else if (disponible != null) { // Si solo disponible trae valor
-                List<Room> rooms = iRepositoryRoom.findRoomsByIsAvailable(disponible);
-                result.object = rooms;
+                Page<Room> rooms = iRepositoryRoom.findRoomsByIsAvailable(disponible, pageable);
+                result.object = rooms.getContent();
+                result.totalRecords = rooms.getTotalElements();
                 result.correct = true;
             } else {
-                result.object = iRepositoryRoom.findAll();
+                Page<Room> rooms = iRepositoryRoom.findAll(pageable);
+                result.object = rooms.getContent();
+                result.totalRecords = rooms.getTotalElements();
+                result.correct = true;
             }
             
         } catch (Exception ex) {

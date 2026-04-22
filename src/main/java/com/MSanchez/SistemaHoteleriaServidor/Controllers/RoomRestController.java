@@ -84,9 +84,13 @@ public class RoomRestController {
     @GetMapping("/filter")
     public ResponseEntity RoomFilter(
             @RequestParam(required = false) String tipo,
-            @RequestParam(required = false) Boolean disponible) {
+            @RequestParam(required = false) Boolean disponible,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
-        Result result = serviceRoom.RoomFilter(tipo, disponible);
+                Pageable pageable = PageRequest.of(page, size);
+
+        Result result = serviceRoom.RoomFilter(tipo, disponible, pageable);
         return ResponseEntity.ok(result);
     }
 
