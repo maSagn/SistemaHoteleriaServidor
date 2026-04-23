@@ -10,10 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.MSanchez.SistemaHoteleriaServidor.Component.JwtUtil;
 import com.MSanchez.SistemaHoteleriaServidor.DAO.IRepositoryUsuario;
+import com.MSanchez.SistemaHoteleriaServidor.DTO.Login;
 import com.MSanchez.SistemaHoteleriaServidor.Models.Usuario;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 
+@Tag(name = "Login RestController", description = "Controlador enfocado a metodos de login")
 @RestController
 @RequestMapping("api/auth")
 public class LoginRestController {
@@ -29,8 +33,9 @@ public class LoginRestController {
         this.jwtUtil = jwtUtil;
     }
 
+    @Operation(summary = "Endpoint para autenticacion del usuario", description = "Endpoint que genera un token jwt para autenticacion.")
     @PostMapping
-    public ResponseEntity login(@RequestBody Usuario loginRequest, HttpSession session) {
+    public ResponseEntity login(@RequestBody Login loginRequest, HttpSession session) {
         Usuario dbUser = iRepositoryUsuario.findByEmail(loginRequest.getEmail());
 
         if (dbUser == null) {
