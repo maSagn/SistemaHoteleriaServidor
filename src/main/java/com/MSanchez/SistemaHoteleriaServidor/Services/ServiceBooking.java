@@ -150,7 +150,7 @@ public class ServiceBooking {
         Result result = new Result();
 
         try {
-            List<Booking> bookings = iRepositoryBooking.findByGuestEmail(email);
+            List<Booking> bookings = iRepositoryBooking.findBookingsByUserEmail(email);
 
             result.object = bookings;
             result.correct = true;

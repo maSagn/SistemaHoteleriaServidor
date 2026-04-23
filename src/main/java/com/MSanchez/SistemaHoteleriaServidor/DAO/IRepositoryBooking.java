@@ -9,7 +9,8 @@ import org.springframework.data.repository.query.Param;
 import com.MSanchez.SistemaHoteleriaServidor.Models.Booking;
 
 public interface IRepositoryBooking extends JpaRepository<Booking, Integer> {
-    List<Booking> findByGuestEmail(String guestEmail);
+    @Query("SELECT b FROM Booking b WHERE b.Usuario.email = :guestEmail")
+    List<Booking> findBookingsByUserEmail(String guestEmail);
 
     @Query("SELECT COUNT (b) FROM Booking b WHERE b.Room.IdRoom = :idRoom")
     Long countRecordsByIdRoom(@Param("idRoom") int idRoom);
