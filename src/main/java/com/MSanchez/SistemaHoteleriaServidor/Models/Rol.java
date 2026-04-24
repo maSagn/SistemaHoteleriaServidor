@@ -1,11 +1,13 @@
 package com.MSanchez.SistemaHoteleriaServidor.Models;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+@Schema(description = "Entidad que repesenta un rol del usuario")
 @Entity
 public class Rol {
     @Id

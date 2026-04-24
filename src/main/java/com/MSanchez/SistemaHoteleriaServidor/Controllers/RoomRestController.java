@@ -83,7 +83,7 @@ public class RoomRestController {
         return ResponseEntity.ok(result);
     }
 
-    @Operation(summary = "Agregar una habitación", description = "Endpoint para agregar un una nueva habitación al sistema.")
+    @Operation(summary = "Agregar una habitación", description = "Endpoint para agregar una nueva habitación al sistema.")
     @PostMapping
     public ResponseEntity Add(@RequestBody Room room) {
         Result result = serviceRoom.Add(room);
