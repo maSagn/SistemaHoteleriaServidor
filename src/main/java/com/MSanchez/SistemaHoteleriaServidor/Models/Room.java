@@ -1,11 +1,13 @@
 package com.MSanchez.SistemaHoteleriaServidor.Models;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+@Schema(description = "Entidad que repesenta una habitación")
 @Entity
 public class Room {
     @Id
@@ -31,6 +33,7 @@ public class Room {
     @Column(name = "description")
     private String Description;
     
+    @Schema(hidden = true)
     public int getIdRoom() {
         return IdRoom;
     }
@@ -55,6 +58,7 @@ public class Room {
     public void setPricePerNight(double pricePerNight) {
         PricePerNight = pricePerNight;
     }
+    @Schema(hidden = true)
     public boolean isIsAvailable() {
         return IsAvailable;
     }
